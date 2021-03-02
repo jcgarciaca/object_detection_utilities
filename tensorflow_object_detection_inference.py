@@ -55,8 +55,8 @@ print('Images folder {}'.format(IMAGES_FOLDER))
 print('Target folder {}'.format(TARGET_FOLDER))
 
 num_images = len(images_list)
-
-for idx, image_name in enumerate(images_list):
+for idx in range(num_images):
+  image_name = 'img_{}.jpg'.format(idx)
   print('{}/{}. Running inference for {}'.format(idx + 1, len(images_list), image_name))
   image_np = load_image_into_numpy_array(os.path.join(IMAGES_FOLDER, image_name))
   input_tensor = tf.convert_to_tensor(image_np)
