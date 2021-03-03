@@ -100,24 +100,30 @@ for idx in range(num_images):
       y_.append((ymin + ymax) / 2)
 
   kmeans = KMeans(n_clusters=3)
-  kmeans.fit(np.array(y_).reshape(-1, 1))
-
-  cnt_dict = {}
-  counter = np.unique(kmeans.labels_, return_counts=True)
-  for key, ctr in zip(counter[0], counter[1]):
-    cnt_dict[key] = ctr
-
-  groups = {}
-  for d, cluster in zip(y_, kmeans.labels_):
-    groups[cluster] = groups.get(cluster, 0) + d
-
-  for key in groups.keys():
-    groups[key] /= cnt_dict[key]
-
+  fitted = False
+  try:
+    kmeans.fit(np.array(y_).reshape(-1, 1))
+    fitted = True
+  except:
+    print('Not possible to create clusters')
+  
   lines = []
-  for key in cnt_dict.keys():
-    if cnt_dict[key] > 1:
-      lines.append(int(groups[key]))  
+  if fitted:
+    cnt_dict = {}
+    counter = np.unique(kmeans.labels_, return_counts=True)
+    for key, ctr in zip(counter[0], counter[1]):
+      cnt_dict[key] = ctr
+
+    groups = {}
+    for d, cluster in zip(y_, kmeans.labels_):
+      groups[cluster] = groups.get(cluster, 0) + d
+
+    for key in groups.keys():
+      groups[key] /= cnt_dict[key]
+    
+    for key in cnt_dict.keys():
+      if cnt_dict[key] > 1:
+        lines.append(int(groups[key]))  
   
   img = Image.fromarray(image_np_with_detections, 'RGB')
   draw = ImageDraw.Draw(img)
