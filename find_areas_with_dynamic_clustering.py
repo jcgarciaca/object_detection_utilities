@@ -58,8 +58,8 @@ images_list = os.listdir(IMAGES_FOLDER)
 print('Images folder {}'.format(IMAGES_FOLDER))
 print('Target folder {}'.format(TARGET_FOLDER))
 
-
 num_images = len(images_list)
+min_score_thresh = 0.5
 for idx in range(num_images):
   image_name = 'img_{}.jpg'.format(idx)
   print('{}/{}. Running inference for {}'.format(idx + 1, len(images_list), image_name))
@@ -77,8 +77,7 @@ for idx in range(num_images):
   
   # detection_classes should be ints
   detections['detection_classes'] = detections['detection_classes'].astype(np.int64)
-  min_score_thresh = 0.5
-
+  
   image_np_with_detections = image_np.copy()
   viz_utils.visualize_boxes_and_labels_on_image_array(
       image_np_with_detections,
