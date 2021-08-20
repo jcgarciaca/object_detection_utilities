@@ -69,17 +69,15 @@ def dict_to_tf_example(data,
     """
 
     data_dir = FLAGS.data_dir
-    img_path = os.path.join(data_dir, image_subdirectory, data['filename'])
+    img_path = os.path.join(data_dir, image_subdirectory, data['filename'].split('.')[0] + '.jpg')
     print('img_path: ', img_path)
 
     with tf.gfile.GFile(img_path, 'rb') as fid:
         encoded_jpg = fid.read()
     encoded_jpg_io = io.BytesIO(encoded_jpg)
     image = PIL.Image.open(encoded_jpg_io)
-    '''
     if image.format != 'JPEG':
         raise ValueError('Image format not JPEG')
-    '''
     key = hashlib.sha256(encoded_jpg).hexdigest()
 
     width, height = image.size
